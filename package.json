@@ -1,0 +1,7 @@
+{
+  "name": "uspect-test",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
