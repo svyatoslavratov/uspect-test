@@ -1,10 +1,9 @@
-import express from "express";
+import App from "./app";
 
-const app = express();
+async function startServer() {
+  const app = new App();
+  await app.init();
+  app.start();
+}
 
-const PORT = 8000;
-
-app.get("/", (req, res) => res.send("GET '/'"));
-app.listen(PORT, () => {
-  console.log(`Server was started on ${PORT} port`);
-});
+startServer();
