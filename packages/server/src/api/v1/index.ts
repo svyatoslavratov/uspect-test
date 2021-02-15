@@ -1,11 +1,11 @@
 import { Router } from "express";
 
-import hello from "./routes/hello";
+import helloRoute from "./components/hello";
 
 export default (): Router => {
   const app = Router();
 
-  hello(app);
+  app.use("/hello", helloRoute);
 
   return app;
 };
