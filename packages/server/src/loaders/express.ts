@@ -31,4 +31,30 @@ export default ({ app }: { app: Application }): void => {
     err["status"] = 404;
     next(err);
   });
+
+  app.use((err: IError, _req: Request, res: Response, next: NextFunction) => {
+    const response = {
+      status: err.status || 500,
+      body: {
+        name: err.name,
+        message: err.message,
+        status: err.status
+      }
+    };
+
+    switch (err.name) {
+      case "CastError":
+        response.status = 400;
+        response.body.message = "Invalid parameter";
+        break;
+
+      case "ValidationError":
+        response.status = 400;
+        break;
+    }
+
+    res.status(response.status).json(response.body);
+
+    next(err);
+  });
 };
