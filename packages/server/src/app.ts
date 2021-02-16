@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import { Server } from "http";
 
+import config from "./config";
 import loaders from "./loaders";
 
 export default class App {
@@ -10,7 +11,7 @@ export default class App {
 
   constructor() {
     this.instance = express();
-    this.PORT = 8000;
+    this.PORT = config.port;
   }
 
   async init(): Promise<void> {
