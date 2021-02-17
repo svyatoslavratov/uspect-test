@@ -7,7 +7,12 @@ const route = Router();
 route.get("/", async (req: Request, res: Response, next: NextFunction) => {
   const controller = new ItemsController();
   try {
-    const response = await controller.getAll(req.body?.page, req.body?.limit);
+    const page = req.query?.page;
+    const limit = req.query?.limit;
+    const response = await controller.getAll(
+      parseInt(page as string),
+      parseInt(limit as string)
+    );
     res.status(200).json(response);
   } catch (e) {
     next(e);

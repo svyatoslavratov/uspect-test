@@ -49,7 +49,9 @@ export class ItemsService {
     id: string,
     data: IItem
   ): Promise<IItem & Document<unknown>> {
-    const updatedItem = await ItemModel.findOneAndUpdate({ _id: id }, data);
+    const updatedItem = await ItemModel.findOneAndUpdate({ _id: id }, data, {
+      new: true
+    });
     if (!updatedItem) {
       throw new Error("Failed to update item");
     }

@@ -18,7 +18,10 @@ export default class App {
   }
 
   async init(): Promise<void> {
-    await loaders({ app: this.instance, config: this.conf });
+    await loaders({
+      app: this.instance,
+      config: this.conf
+    });
   }
 
   start(): void {
