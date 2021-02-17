@@ -15,7 +15,7 @@ switch (process.env.NODE_ENV) {
 const env = dotenv.config({ path: envPath });
 
 if (env.error) {
-  throw new Error(".env file not found");
+  throw new Error(`${envPath} file not found`);
 }
 
 export default {
