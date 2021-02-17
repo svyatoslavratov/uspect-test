@@ -1,14 +1,59 @@
-import { Document } from "mongoose";
+import {
+  Document,
+  _FilterQuery,
+  _AllowStringsForIds,
+  _LeanDocument
+} from "mongoose";
 
-import { IItem } from "interfaces/IItem";
+import { IItem, IItemFilter } from "interfaces/IItem";
 import ItemModel from "models/item";
+
+type ModelFindFilter =
+  | _FilterQuery<
+      _AllowStringsForIds<
+        Pick<
+          Pick<
+            _LeanDocument<IItem & Document<any>>,
+            "_id" | "__v" | "id" | "name" | "price" | "count"
+          >,
+          "_id" | "__v" | "id" | "name" | "price" | "count"
+        >
+      >
+    >
+  | undefined;
 
 export class ItemsService {
   public async getItems(
     page = 1,
-    limit = 0
+    limit = 0,
+    filter: IItemFilter
   ): Promise<(IItem & Document<unknown>)[]> {
-    const items = await ItemModel.find()
+    const searchFilter: ModelFindFilter = filter.search
+      ? { $text: { $search: filter.search } }
+      : undefined;
+
+    const priceFilter: ModelFindFilter = {};
+
+    if (filter.maxPrice) {
+      priceFilter.$and = [
+        { price: { $gte: filter.minPrice || 0 } },
+        { price: { $lte: filter.maxPrice } }
+      ];
+    } else {
+      priceFilter.price = { $gte: filter.minPrice || 0 };
+    }
+
+    const stockFilter: ModelFindFilter = filter.inStock
+      ? {
+          count: { $gt: 0 }
+        }
+      : undefined;
+
+    const items = await ItemModel.find({
+      ...searchFilter,
+      ...priceFilter,
+      ...stockFilter
+    })
       .limit(limit)
       .skip((page - 1) * limit);
     if (!items) {

@@ -22,4 +22,6 @@ const Items = new mongoose.Schema(
   { timestamps: true }
 );
 
+Items.index({ name: "text" });
+
 export default mongoose.model<IItem & mongoose.Document>("items", Items);

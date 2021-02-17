@@ -101,6 +101,143 @@ describe("/api/v1/items - testing API endpoint", () => {
       );
       expect(result.status).toEqual(200);
     });
+
+    it("Should return filtered items by search name", async () => {
+      const items = await ItemModel.insertMany([
+        {
+          name: "Mi Ultra",
+          count: 1,
+          price: 100
+        },
+        {
+          name: "Apple S 10",
+          count: 2,
+          price: 100
+        },
+        {
+          name: "Sumsung Ultra 10",
+          count: 3,
+          price: 100
+        }
+      ]);
+
+      const result = await request(app.instance).get("/api/v1/items").query({
+        search: "ultra"
+      });
+      expect(JSON.stringify(result.body)).toEqual(
+        JSON.stringify([items[0], items[2]])
+      );
+      expect(result.status).toEqual(200);
+    });
+
+    it("Should return filtered items by stock (count > 0)", async () => {
+      const items = await ItemModel.insertMany([
+        {
+          name: "Mi Ultra",
+          count: 1,
+          price: 100
+        },
+        {
+          name: "Apple S 10",
+          count: 0,
+          price: 100
+        },
+        {
+          name: "Sumsung Ultra 10",
+          count: 3,
+          price: 100
+        }
+      ]);
+
+      const result = await request(app.instance).get("/api/v1/items").query({
+        inStock: "true"
+      });
+      expect(JSON.stringify(result.body)).toEqual(
+        JSON.stringify([items[0], items[2]])
+      );
+      expect(result.status).toEqual(200);
+    });
+
+    it("Should return filtered items by min price", async () => {
+      const items = await ItemModel.insertMany([
+        {
+          name: "Mi Ultra",
+          count: 1,
+          price: 55000
+        },
+        {
+          name: "Apple S 10",
+          count: 0,
+          price: 34000
+        },
+        {
+          name: "Sumsung Ultra 10",
+          count: 3,
+          price: 100
+        }
+      ]);
+
+      const result = await request(app.instance).get("/api/v1/items").query({
+        minPrice: 50000
+      });
+      expect(JSON.stringify(result.body)).toEqual(JSON.stringify([items[0]]));
+      expect(result.status).toEqual(200);
+    });
+
+    it("Should return filtered items by max price", async () => {
+      const items = await ItemModel.insertMany([
+        {
+          name: "Mi Ultra",
+          count: 1,
+          price: 55000
+        },
+        {
+          name: "Apple S 10",
+          count: 0,
+          price: 34000
+        },
+        {
+          name: "Sumsung Ultra 10",
+          count: 3,
+          price: 100
+        }
+      ]);
+
+      const result = await request(app.instance).get("/api/v1/items").query({
+        maxPrice: 50000
+      });
+      expect(JSON.stringify(result.body)).toEqual(
+        JSON.stringify([items[1], items[2]])
+      );
+      expect(result.status).toEqual(200);
+    });
+
+    it("Should return filtered items by min price and max price", async () => {
+      const items = await ItemModel.insertMany([
+        {
+          name: "Mi Ultra",
+          count: 1,
+          price: 55000
+        },
+        {
+          name: "Apple S 10",
+          count: 0,
+          price: 34000
+        },
+        {
+          name: "Sumsung Ultra 10",
+          count: 3,
+          price: 100
+        }
+      ]);
+
+      const result = await request(app.instance).get("/api/v1/items").query({
+        maxPrice: 50000,
+        minPrice: 30000
+      });
+      expect(JSON.stringify(result.body)).toEqual(JSON.stringify([items[1]]));
+      expect(result.status).toEqual(200);
+    });
   });
 
   describe("GET /api/v1/items/:id", () => {

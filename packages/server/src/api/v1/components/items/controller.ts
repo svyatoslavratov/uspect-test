@@ -1,7 +1,7 @@
 import { Get, Route, Controller, Post, Put, Delete } from "tsoa";
 import { Document } from "mongoose";
 
-import { IItem } from "interfaces/IItem";
+import { IItem, IItemFilter } from "interfaces/IItem";
 import { ItemsService } from "services/items";
 
 @Route("/items")
@@ -16,9 +16,14 @@ export class ItemsController extends Controller {
   @Get("/")
   public async getAll(
     page: number,
-    limit: number
+    limit: number,
+    filter: IItemFilter
   ): Promise<(IItem & Document<unknown>)[]> {
-    const response = await this.itemsServiceInstance.getItems(page, limit);
+    const response = await this.itemsServiceInstance.getItems(
+      page,
+      limit,
+      filter
+    );
     return response;
   }
 

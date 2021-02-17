@@ -11,7 +11,17 @@ route.get("/", async (req: Request, res: Response, next: NextFunction) => {
     const limit = req.query?.limit;
     const response = await controller.getAll(
       parseInt(page as string),
-      parseInt(limit as string)
+      parseInt(limit as string),
+      {
+        maxPrice: req.query?.maxPrice
+          ? parseInt(req.query.maxPrice as string)
+          : undefined,
+        minPrice: req.query?.minPrice
+          ? parseInt(req.query.minPrice as string)
+          : undefined,
+        inStock: req.query?.inStock === "true",
+        search: req.query?.search as string
+      }
     );
     res.status(200).json(response);
   } catch (e) {
