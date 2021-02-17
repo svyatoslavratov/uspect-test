@@ -1,14 +1,26 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
+import morgan from "morgan";
 
 import { IError } from "../interfaces/IError";
 import V1Routes from "../api/v1";
+import Logger from "./logger";
 
 export default ({ app }: { app: Application }): void => {
   app.use(express.static("public"));
 
   app.use(bodyParser.json());
+
+  app.use(
+    morgan("tiny", {
+      stream: {
+        write: (text: string) => {
+          Logger.http(text);
+        }
+      }
+    })
+  );
 
   app.get("/api/status", (req: Request, res: Response) => {
     res.status(200).end();

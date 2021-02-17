@@ -2,19 +2,20 @@ import config from "config";
 import mongooseLoader from "loaders/mongoose";
 import ItemModel from "models/item";
 import { IItem } from "interfaces/IItem";
+import Logger from "loaders/logger";
 
 const generate = async () => {
-  console.log("Seed generation started.");
+  Logger.info("Seed generation started.");
   const connection = await mongooseLoader(config.dbUrl);
 
-  console.log("Creation ItemModel...");
+  Logger.silly("Creation ItemModel...");
   for (let i = 0; i < 100; i++) {
     await ItemModel.create(await generateItem());
   }
-  console.log("\x1b[32m", "Completed ItemModel creation.");
+  Logger.silly("Completed ItemModel creation.");
 
   connection.disconnect();
-  console.log("\x1b[32m", "Seed generation completed.");
+  Logger.info("Seed generation completed.");
 };
 
 generate();
