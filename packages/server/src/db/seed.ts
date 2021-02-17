@@ -42,7 +42,7 @@ const generateItem = async (): Promise<IItem> => {
 
   const priceMarketingPart = [99, 249, 999, 449, 889];
   const price =
-    getRandomInt(100000) + 1000 + getRandomArrayItem(priceMarketingPart);
+    (getRandomInt(100) + 1) * 1000 + getRandomArrayItem(priceMarketingPart);
 
   const count = getRandomInt(1000);
 
