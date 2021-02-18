@@ -3,18 +3,38 @@ import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import helmet from "helmet";
+import session from "express-session";
+import passport from "passport";
 
-import { IError } from "../interfaces/IError";
 import V1Routes from "../api/v1";
 import Logger from "./logger";
+import { IConfig } from "interfaces/IConfig";
+import { IError } from "interfaces/IError";
 
-export default ({ app }: { app: Application }): void => {
+export default ({
+  app,
+  config
+}: {
+  app: Application;
+  config: IConfig;
+}): void => {
   app.use(helmet());
 
   app.use(express.static("public"));
 
+  app.use(
+    session({
+      secret: config.sessionSecret,
+      saveUninitialized: false,
+      resave: false
+    })
+  );
+
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   app.use(
     morgan("tiny", {

@@ -13,7 +13,7 @@ type ModelFindFilter =
       _AllowStringsForIds<
         Pick<
           Pick<
-            _LeanDocument<IItem & Document<any>>,
+            _LeanDocument<IItem & Document<unknown>>,
             "_id" | "__v" | "id" | "name" | "price" | "count"
           >,
           "_id" | "__v" | "id" | "name" | "price" | "count"

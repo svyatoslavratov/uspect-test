@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 import { IItem } from "interfaces/IItem";
 
-const Items = new mongoose.Schema(
+const Item = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -22,6 +22,6 @@ const Items = new mongoose.Schema(
   { timestamps: true }
 );
 
-Items.index({ name: "text" });
+Item.index({ name: "text" });
 
-export default mongoose.model<IItem & mongoose.Document>("items", Items);
+export default mongoose.model<IItem & mongoose.Document>("items", Item);

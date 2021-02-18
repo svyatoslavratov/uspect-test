@@ -20,5 +20,7 @@ if (env.error) {
 
 export default {
   port: process.env.PORT ? +process.env.PORT : 8000,
-  dbUrl: process.env.MONGODB_URI || ""
+  dbUrl: process.env.MONGODB_URI,
+  sessionSecret: process.env.SESSION_SECRET,
+  jwtSecret: process.env.JWT_SECRET
 } as IConfig;
