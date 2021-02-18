@@ -2,15 +2,19 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
+import helmet from "helmet";
 
 import { IError } from "../interfaces/IError";
 import V1Routes from "../api/v1";
 import Logger from "./logger";
 
 export default ({ app }: { app: Application }): void => {
+  app.use(helmet());
+
   app.use(express.static("public"));
 
   app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use(
     morgan("tiny", {
