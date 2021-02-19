@@ -16,7 +16,7 @@ switch (process.env.NODE_ENV) {
 const env = dotenv.config({ path: envPath });
 
 if (env.error) {
-  throw new Error(`${envPath} file not found`);
+  console.warn(`Warn: ${envPath} file not found`);
 }
 
 const email: { user?: string; pass?: string; host?: string; send?: boolean } = {
