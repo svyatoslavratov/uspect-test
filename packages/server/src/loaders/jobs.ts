@@ -11,5 +11,5 @@ export default async ({ agenda }: { agenda: Agenda }): Promise<void> => {
 
   await agenda.start();
 
-  agenda.every("1 minutes", "delete_not_verified_user");
+  agenda.every("1 days", "delete_not_verified_user");
 };
