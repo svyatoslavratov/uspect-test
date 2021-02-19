@@ -9,9 +9,10 @@ beforeAll(async () => {
 });
 
 describe("GET /api/v1/test - a simple API endpoint", () => {
-  it("Hello API Request", async () => {
+  it("Hello API Request", async (done) => {
     const result = await request(app.instance).get("/api/v1/test");
     expect(result.body).toEqual({ message: "test route" });
     expect(result.status).toEqual(200);
+    done();
   });
 });

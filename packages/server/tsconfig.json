@@ -7,11 +7,11 @@
     "baseUrl": "src",
     "esModuleInterop": true,
     "strict": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "removeComments": true,
     "sourceMap": true
   },
-  "include": ["src"]
+  "include": ["src", "__tests__"]
 }

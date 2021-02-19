@@ -16,7 +16,7 @@ beforeEach(async () => {
 
 describe("/api/v1/items - testing API endpoint", () => {
   describe("GET /api/v1/items", () => {
-    it("Should return all items", async () => {
+    it("Should return all items", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Test_1",
@@ -28,9 +28,10 @@ describe("/api/v1/items - testing API endpoint", () => {
       const result = await request(app.instance).get("/api/v1/items");
       expect(JSON.stringify(result.body)).toEqual(JSON.stringify(items));
       expect(result.status).toEqual(200);
+      done();
     });
 
-    it("Pagintaion with limit (without page)", async () => {
+    it("Pagintaion with limit (without page)", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Test_1",
@@ -56,9 +57,11 @@ describe("/api/v1/items - testing API endpoint", () => {
         JSON.stringify(items.slice(0, 2))
       );
       expect(result.status).toEqual(200);
+
+      done();
     });
 
-    it("Pagintaion with limit and page", async () => {
+    it("Pagintaion with limit and page", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Test_1",
@@ -100,9 +103,11 @@ describe("/api/v1/items - testing API endpoint", () => {
         JSON.stringify(items.slice(2, 4))
       );
       expect(result.status).toEqual(200);
+
+      done();
     });
 
-    it("Should return filtered items by search name", async () => {
+    it("Should return filtered items by search name", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Mi Ultra",
@@ -128,9 +133,11 @@ describe("/api/v1/items - testing API endpoint", () => {
         JSON.stringify([items[0], items[2]])
       );
       expect(result.status).toEqual(200);
+
+      done();
     });
 
-    it("Should return filtered items by stock (count > 0)", async () => {
+    it("Should return filtered items by stock (count > 0)", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Mi Ultra",
@@ -156,9 +163,11 @@ describe("/api/v1/items - testing API endpoint", () => {
         JSON.stringify([items[0], items[2]])
       );
       expect(result.status).toEqual(200);
+
+      done();
     });
 
-    it("Should return filtered items by min price", async () => {
+    it("Should return filtered items by min price", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Mi Ultra",
@@ -182,9 +191,11 @@ describe("/api/v1/items - testing API endpoint", () => {
       });
       expect(JSON.stringify(result.body)).toEqual(JSON.stringify([items[0]]));
       expect(result.status).toEqual(200);
+
+      done();
     });
 
-    it("Should return filtered items by max price", async () => {
+    it("Should return filtered items by max price", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Mi Ultra",
@@ -210,9 +221,11 @@ describe("/api/v1/items - testing API endpoint", () => {
         JSON.stringify([items[1], items[2]])
       );
       expect(result.status).toEqual(200);
+
+      done();
     });
 
-    it("Should return filtered items by min price and max price", async () => {
+    it("Should return filtered items by min price and max price", async (done) => {
       const items = await ItemModel.insertMany([
         {
           name: "Mi Ultra",
@@ -237,11 +250,13 @@ describe("/api/v1/items - testing API endpoint", () => {
       });
       expect(JSON.stringify(result.body)).toEqual(JSON.stringify([items[1]]));
       expect(result.status).toEqual(200);
+
+      done();
     });
   });
 
   describe("GET /api/v1/items/:id", () => {
-    it("Should return item by 'id'", async () => {
+    it("Should return item by 'id'", async (done) => {
       const item = await ItemModel.create({
         name: "Test_1",
         count: 1,
@@ -253,11 +268,13 @@ describe("/api/v1/items - testing API endpoint", () => {
       );
       expect(JSON.stringify(result.body)).toEqual(JSON.stringify(item));
       expect(result.status).toEqual(200);
+
+      done();
     });
   });
 
   describe("POST /api/v1/items", () => {
-    it("Should return new item", async () => {
+    it("Should return new item", async (done) => {
       const item = {
         name: "Test_1",
         count: 1,
@@ -272,11 +289,13 @@ describe("/api/v1/items - testing API endpoint", () => {
 
       expect(JSON.stringify(result.body)).toEqual(JSON.stringify(newItem));
       expect(result.status).toEqual(201);
+
+      done();
     });
   });
 
   describe("PUT /api/v1/items/:id", () => {
-    it("Should return updated item", async () => {
+    it("Should return updated item", async (done) => {
       const item = await ItemModel.create({
         name: "Test_1",
         count: 1,
@@ -292,11 +311,13 @@ describe("/api/v1/items - testing API endpoint", () => {
       expect(result.body.name).toEqual("updated");
       expect(result.body._id).toEqual(item.id);
       expect(result.status).toEqual(202);
+
+      done();
     });
   });
 
   describe("DELETE /api/v1/items/:id", () => {
-    it("Should return deleted item", async () => {
+    it("Should return deleted item", async (done) => {
       const item = await ItemModel.create({
         name: "Test_1",
         count: 1,
@@ -310,6 +331,8 @@ describe("/api/v1/items - testing API endpoint", () => {
       expect(JSON.stringify(result.body)).toEqual(JSON.stringify(item));
       expect(result.body._id).toEqual(item.id);
       expect(result.status).toEqual(200);
+
+      done();
     });
   });
 });

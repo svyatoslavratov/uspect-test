@@ -5,7 +5,7 @@
     "lerna": "^3.22.1"
   },
   "scripts": {
-    "install": "lerna exec -- npm ci",
+    "install": "lerna exec -- npm i --silent",
     "test": "lerna run test --parallel",
     "lint": "lerna run lint --parallel",
     "build": "lerna run build --parallel",

@@ -5,9 +5,6 @@ import { IConfig } from "interfaces/IConfig";
 let envPath: string;
 
 switch (process.env.NODE_ENV) {
-  case "testing":
-    envPath = ".env.test";
-    break;
   default:
     envPath = ".env";
     break;
@@ -17,6 +14,8 @@ const env = dotenv.config({ path: envPath });
 
 if (env.error) {
   console.warn(`Warn: ${envPath} file not found`);
+} else {
+  console.log("CONFIG DOTENV", env.parsed);
 }
 
 const email: { user?: string; pass?: string; host?: string; send?: boolean } = {

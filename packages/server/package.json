@@ -18,10 +18,10 @@
     "url": "https://github.com/svyatoslavratov/uspect-test/issues"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=testing jest",
+    "test": "cross-env NODE_ENV=testing jest --forceExit",
     "start": "cross-env NODE_ENV=production node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
-    "build": "tsc -p ./tsconfig.json",
+    "build": "tsc -p ./tsconfig.server.json",
     "lint": "eslint --ext .js --ext .ts src/",
     "lint:fix": "eslint --fix --ext .js --ext .ts src/",
     "swagger": "tsoa spec",

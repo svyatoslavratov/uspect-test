@@ -16,6 +16,12 @@ jobs:
       matrix:
         node-version: [14.x, 15.x]
 
+    services:
+      mongo:
+        image: mongo:4
+        ports:
+          - 27017:27017
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -25,5 +31,7 @@ jobs:
     - run: npm ci
     - run: npm run install
     - run: npm run build --if-present
-    - run: npm run test
+    - run: |
+        echo $ENV | base64 -d > packages/server/.env
+        npm run test
     - run: npm run lint
