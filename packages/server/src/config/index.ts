@@ -14,8 +14,6 @@ const env = dotenv.config({ path: envPath });
 
 if (env.error) {
   console.warn(`Warn: ${envPath} file not found`);
-} else {
-  console.log("CONFIG DOTENV", env.parsed);
 }
 
 const email: { user?: string; pass?: string; host?: string; send?: boolean } = {

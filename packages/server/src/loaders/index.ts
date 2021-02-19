@@ -15,7 +15,6 @@ export default async ({
   app: Application;
   config: IConfig;
 }): Promise<void> => {
-  console.log("CONFIG LOADER", config, JSON.stringify(config));
   const mongooseCoonection = await mongooseLoader(config.dbUrl);
   Logger.info("Database connected.");
 
