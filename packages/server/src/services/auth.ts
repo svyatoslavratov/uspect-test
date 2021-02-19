@@ -3,10 +3,17 @@ import jwt from "jsonwebtoken";
 import { IUser, IUserAuth } from "interfaces/IUser";
 import UserModel from "models/user";
 import Logger from "loaders/logger";
+import { MailerService } from "./mailer";
 
 import config from "config";
 
 export class AuthService {
+  private mailer: MailerService;
+
+  constructor() {
+    this.mailer = new MailerService();
+  }
+
   public async signUp(authData: {
     email: string;
     password: string;
@@ -19,7 +26,10 @@ export class AuthService {
 
     const token = await this.generateToken(user);
 
-    Logger.silly(`Sign Up user: `, user._id);
+    Logger.silly(`Sign Up user: ${user._id}`);
+
+    await this.mailer.sendWelcomeEmail(user.email);
+
     return {
       user: {
         id: user._id,
@@ -68,7 +78,7 @@ export class AuthService {
       { expiresIn: "24h" }
     );
 
-    Logger.silly("Sign JWT token for userId: ", user._id);
+    Logger.silly(`Sign JWT token for userId: ${user._id}`);
     return token;
   }
 }
