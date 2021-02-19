@@ -9,6 +9,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      ENV: ${{ secrets.ENV_TEST }}
+
     strategy:
       matrix:
         node-version: [14.x, 15.x]
