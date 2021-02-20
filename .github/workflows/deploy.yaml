@@ -19,7 +19,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.HOST_USER }}
-        key: ${{ secrets.HOST_KEY }}
+        password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
         script: |
           sudo apt update
