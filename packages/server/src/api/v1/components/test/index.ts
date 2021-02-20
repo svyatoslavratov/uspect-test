@@ -17,7 +17,7 @@ route.get(
   withAuth({ unconfirmedEmail: true }),
   (req: Request, res: Response) => {
     const controller = new TestController();
-    const response = controller.secret((req.user as IUser)?.email);
+    const response = controller.secret(req);
     res.json(response).status(200);
   }
 );

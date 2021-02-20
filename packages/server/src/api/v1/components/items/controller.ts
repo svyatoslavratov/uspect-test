@@ -1,7 +1,16 @@
-import { Get, Route, Controller, Post, Put, Delete } from "tsoa";
-import { Document } from "mongoose";
+import {
+  Get,
+  Route,
+  Controller,
+  Post,
+  Put,
+  Delete,
+  Query,
+  Path,
+  Body
+} from "tsoa";
 
-import { IItem, IItemFilter } from "interfaces/IItem";
+import { IItem, IItemFilter, IItemTDO } from "../../../../interfaces/IItem";
 import { ItemsService } from "services/items";
 
 @Route("/items")
@@ -13,43 +22,55 @@ export class ItemsController extends Controller {
     this.itemsServiceInstance = new ItemsService();
   }
 
-  @Get("/")
+  @Get()
   public async getAll(
-    page: number,
-    limit: number,
-    filter: IItemFilter
-  ): Promise<(IItem & Document<unknown>)[]> {
+    @Query() page?: number,
+    @Query() limit?: number,
+    @Query() maxPrice?: number,
+    @Query() minPrice?: number,
+    @Query() inStock?: boolean,
+    @Query() search?: string
+    // @Query() filter: IItemFilter
+  ): Promise<IItem[]> {
+    const filter: IItemFilter = {
+      maxPrice,
+      minPrice,
+      inStock,
+      search
+    };
+
     const response = await this.itemsServiceInstance.getItems(
       page,
       limit,
       filter
     );
+
     return response;
   }
 
-  @Get("/:id")
-  public async getById(id: string): Promise<IItem & Document<unknown>> {
+  @Get("/{id}")
+  public async getById(@Path() id: string): Promise<IItem> {
     const response = await this.itemsServiceInstance.getItemById(id);
     return response;
   }
 
-  @Post("/")
-  public async create(item: IItem): Promise<IItem & Document<unknown>> {
+  @Post()
+  public async create(@Body() item: IItemTDO): Promise<IItem> {
     const response = await this.itemsServiceInstance.createItem(item);
     return response;
   }
 
-  @Put("/:id")
+  @Put("/{id}")
   public async update(
-    id: string,
-    data: IItem
-  ): Promise<IItem & Document<unknown>> {
+    @Path() id: string,
+    @Body() data: IItemTDO
+  ): Promise<IItem> {
     const response = await this.itemsServiceInstance.updateItem(id, data);
     return response;
   }
 
-  @Delete("/:id")
-  public async delete(id: string): Promise<IItem & Document<unknown>> {
+  @Delete("/{id}")
+  public async delete(@Path() id: string): Promise<IItem> {
     const response = await this.itemsServiceInstance.deleteItem(id);
     return response;
   }

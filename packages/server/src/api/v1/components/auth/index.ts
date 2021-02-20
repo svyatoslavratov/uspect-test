@@ -1,10 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { Document } from "mongoose";
 
 import { AuthController } from "./controller";
 import { withAuth } from "middlewares/auth";
-import { IUser } from "interfaces/IUser";
-import Logger from "loaders/logger";
 
 const route = Router();
 
@@ -40,10 +37,7 @@ route.get(
   async (req: Request, res: Response, next: NextFunction) => {
     const controller = new AuthController();
     try {
-      const response = await controller.me(
-        req.user as IUser & Document,
-        (req.headers.authorization as string).slice(7)
-      );
+      const response = await controller.me(req);
       res.status(200).json(response);
     } catch (e) {
       next(e);
@@ -54,12 +48,14 @@ route.get(
 route.post(
   "/logout",
   withAuth({ unconfirmedEmail: true }),
-  async (req: Request, res: Response) => {
-    Logger.silly(
-      `User logout (clear session). User id: ${(req.user as IUser)._id}`
-    );
-    req.logOut();
-    res.sendStatus(200);
+  async (req: Request, res: Response, next: NextFunction) => {
+    const controller = new AuthController();
+    try {
+      await controller.logout(req);
+      res.sendStatus(200);
+    } catch (e) {
+      next(e);
+    }
   }
 );
 

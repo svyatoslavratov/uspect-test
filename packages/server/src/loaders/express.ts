@@ -51,7 +51,7 @@ export default ({
   });
 
   app.use(
-    "/docs",
+    "/api/docs",
     swaggerUi.serve,
     swaggerUi.setup(undefined, {
       swaggerOptions: {

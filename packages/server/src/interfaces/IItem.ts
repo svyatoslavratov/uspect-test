@@ -3,6 +3,8 @@ export interface IItem {
   name: string;
   price: number;
   count: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IItemFilter {
@@ -10,4 +12,10 @@ export interface IItemFilter {
   minPrice?: number;
   search?: string;
   inStock?: boolean;
+}
+
+export interface IItemTDO {
+  name: string;
+  price: number;
+  count: number;
 }

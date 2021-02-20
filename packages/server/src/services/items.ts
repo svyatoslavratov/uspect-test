@@ -5,7 +5,7 @@ import {
   _LeanDocument
 } from "mongoose";
 
-import { IItem, IItemFilter } from "interfaces/IItem";
+import { IItem, IItemFilter, IItemTDO } from "interfaces/IItem";
 import ItemModel from "models/item";
 
 type ModelFindFilter =
@@ -72,7 +72,7 @@ export class ItemsService {
     return item;
   }
 
-  public async createItem(item: IItem): Promise<IItem & Document<unknown>> {
+  public async createItem(item: IItemTDO): Promise<IItem & Document<unknown>> {
     const newItem = await ItemModel.create(item);
     if (!newItem) {
       throw new Error("Failed to create new item");
@@ -92,7 +92,7 @@ export class ItemsService {
 
   public async updateItem(
     id: string,
-    data: IItem
+    data: IItemTDO
   ): Promise<IItem & Document<unknown>> {
     const updatedItem = await ItemModel.findOneAndUpdate({ _id: id }, data, {
       new: true

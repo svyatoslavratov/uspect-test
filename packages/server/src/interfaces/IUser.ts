@@ -5,6 +5,8 @@ export interface IUser {
   emailVerified: boolean;
   salt: string;
   role: string;
+  createdAt: Date;
+  updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
