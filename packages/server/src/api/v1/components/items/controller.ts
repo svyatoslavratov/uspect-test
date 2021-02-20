@@ -55,7 +55,7 @@ export class ItemsController extends Controller {
   }
 
   @Post()
-  public async create(@Body() item: IItemTDO): Promise<IItem> {
+  public async create(@Body() item: IItemTDO[]): Promise<IItem[]> {
     const response = await this.itemsServiceInstance.createItem(item);
     return response;
   }

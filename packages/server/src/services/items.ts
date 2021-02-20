@@ -72,7 +72,9 @@ export class ItemsService {
     return item;
   }
 
-  public async createItem(item: IItemTDO): Promise<IItem & Document<unknown>> {
+  public async createItem(
+    item: IItemTDO[]
+  ): Promise<(IItem & Document<unknown>)[]> {
     const newItem = await ItemModel.create(item);
     if (!newItem) {
       throw new Error("Failed to create new item");
