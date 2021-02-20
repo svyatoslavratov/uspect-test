@@ -20,7 +20,7 @@ export default ({
 }): void => {
   app.use(helmet());
 
-  app.use(express.static("public"));
+  app.use("/static", express.static("public"));
 
   app.use(
     session({
@@ -55,7 +55,7 @@ export default ({
     swaggerUi.serve,
     swaggerUi.setup(undefined, {
       swaggerOptions: {
-        url: "/swagger.json"
+        url: "/static/swagger.json"
       }
     })
   );

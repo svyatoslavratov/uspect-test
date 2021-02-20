@@ -251,7 +251,10 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IItem"
+									"items": {
+										"$ref": "#/components/schemas/IItem"
+									},
+									"type": "array"
 								}
 							}
 						}
@@ -264,7 +267,10 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IItemTDO"
+								"items": {
+									"$ref": "#/components/schemas/IItemTDO"
+								},
+								"type": "array"
 							}
 						}
 					}
