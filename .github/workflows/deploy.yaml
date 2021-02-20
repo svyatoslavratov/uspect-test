@@ -30,7 +30,7 @@ jobs:
           git remote add origin $REPO_URI
           git fetch origin $GITHUB_SHA
           git reset --hard FETCH_HEAD
-          echo $ENV | base64 -d > .env
+          echo $ENV | base64 -d > packages/server/.env
           docker-compose up -d --build
           docker rmi $(docker images -f "dangling=true" -q) --force || true
         envs: GITHUB_SHA,REPO_URI,ENV
