@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Building & Testing"]
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      $REPO_URI: ${{secrets.REPO_URI}}
+      ENV: ${{ secrets.ENV }}
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.HOST_USER }}
+        key: ${{ secrets.HOST_KEY }}
+        port: ${{ secrets.HOST_PORT }}
+        script: |
+          echo hello
+          mkdir -p uspect_test
+          cd uspect_test
+          rm -rf .git
+          git init
+          git remote add origin $REPO_URI
+          git fetch origin $GITHUB_SHA
+          git reset --hard FETCH_HEAD
+          echo $ENV | base64 -d > packages/server/.env
+          docker-compose up -d --build
+          docker rmi $(docker images -f "dangling=true" -q) --force || true
+        envs: GITHUB_SHA,REPO_URI,ENV
+        script_stop: true
+        command_timeout: 6h

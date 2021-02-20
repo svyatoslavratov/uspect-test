@@ -3,5 +3,13 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "install": "lerna exec -- npm i --silent",
+    "test": "lerna run test --parallel",
+    "lint": "lerna run lint --parallel",
+    "build": "lerna run build --parallel",
+    "start": "lerna run start --parallel",
+    "dev": "lerna run dev --parallel"
   }
 }

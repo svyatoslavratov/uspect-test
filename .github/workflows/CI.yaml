@@ -1,0 +1,37 @@
+name: Building & Testing
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      ENV: ${{ secrets.ENV_TEST }}
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
+    services:
+      mongo:
+        image: mongo:4
+        ports:
+          - 27017:27017
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run install
+    - run: npm run build --if-present
+    - run: |
+        echo $ENV | base64 -d > packages/server/.env
+        npm run test
+    - run: npm run lint
