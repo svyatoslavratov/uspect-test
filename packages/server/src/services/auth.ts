@@ -28,7 +28,7 @@ export class AuthService {
 
     Logger.silly(`Sign Up user: ${user._id}`);
 
-    await this.mailer.sendWelcomeEmail(user.email);
+    this.mailer.sendWelcomeEmail(user.email);
 
     return {
       user: {
