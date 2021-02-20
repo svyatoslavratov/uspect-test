@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: ./packages/server
+      dockerfile: Dockerfile
+    image: nodejs-api
+    container_name: api
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - .:/home/node/app
+      - ./packages/server/node_modules:/home/node/app/node_modules
+    depends_on:
+      - mongo
+    networks:
+      - nginx-network
+
+  mongo:
+    image: mongo:4
+    container_name: uspect_mongodb
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_ROOT_PASSWORD
+    volumes:
+      - ./data:/data/db
+    networks:
+      - nginx-network
+
+  nginx-proxy:
+    build:
+      context: .
+      dockerfile: dockerfile.nginx
+    ports:
+      - 80:80
+      - 443:443
+    image: nginx-proxy
+    container_name: nginx-proxy
+    restart: unless-stopped
+    depends_on:
+      - api
+    volumes:
+      - ~/uspect_test/certs:/etc/nginx/certs
+    networks:
+      - nginx-network
+
+networks:
+  nginx-network:
+    driver: bridge
+
+volumes:
+  data:
+  node_modules:

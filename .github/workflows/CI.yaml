@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ENV: ${{ secrets.ENV_TEST }}
+      ENV: ${{ secrets.ENV_SERVER_TEST }}
 
     strategy:
       matrix:
